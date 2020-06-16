@@ -1,0 +1,23 @@
+{
+    "name": "joao.felix/restfulapi",
+    "description": "A API RESTful with PHP to count how many mls user drink water.",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "João Félix",
+            "email": "felixl.joao@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Source\\": "source/"
+        },
+        "files": [
+            "source/Config.php"
+        ]
+    },
+    "require": {
+        "coffeecode/router": "1.0.*"
+    }
+}
