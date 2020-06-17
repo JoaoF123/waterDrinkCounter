@@ -5,7 +5,7 @@ namespace Source\Controllers;
 use Source\Models\UserModel;
 use Source\Services\Token;
 
-class User
+class User extends BaseController
 {
     public function create()
     {

@@ -5,47 +5,35 @@ namespace Source\Controllers;
 use Source\Services\Token;
 use Source\Models\UserModel;
 
-class Login {
+class Login extends BaseController {
 
     public function execute()
     {
         // Get params sended by json body
-        $params = json_decode(file_get_contents("php://input"), true);
+        $params = $this->getParams(["email", "password"]);
 
-        // Handle params
-        $params = (isset($params[0])) ? $params[0] : $params;
+        // Load User Model
+        $userModel = new UserModel();
 
-        if ($params && (isset($params['email']) && isset($params['password']))) {
+        // Get use by email and password
+        $user = $userModel->getByEmailPassword($params['email'], $params['password']);
 
-            // Load User Model
-            $userModel = new UserModel();
+        // verify user exists
+        if ($user) {
 
-            // Get use by email and password
-            $user = $userModel->getByEmailPassword($params['email'], $params['password']);
+            // Load token service
+            $tokenService = new Token();
 
-            // verify user exists
-            if ($user) {
+            // Generate token
+            $token = $tokenService->generate($user->getId());
 
-                // Load token service
-                $tokenService = new Token();
-
-                // Generate token
-                $token = $tokenService->generate($user->getId());
-
-                // Return sucess status with token
-                http_response_code(200);
-                echo json_encode([ "response" => [ "token" => $token ]]);
-
-            } else {
-
-                // Return Unauthorized status
-                http_response_code(401);
-            }
+            // Return sucess status with token
+            $this->respond(200, [ "token" => $token ]);
 
         } else {
 
-            // Return Bad Request status
-            http_response_code(400);
+            // Return Unauthorized status
+            $this->respond(401, "User does not exist or invalid password.");
         }
     }
 }
