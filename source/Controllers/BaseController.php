@@ -2,6 +2,8 @@
 
 namespace Source\Controllers;
 
+use Source\Models\UserModel;
+use Source\Services\ConnectionCreator;
 use Source\Services\Token;
 
 class BaseController {
@@ -49,8 +51,14 @@ class BaseController {
 
     protected function authenticatedUser() : void
     {
-        if (!Token::check()) {
+        if (!Token::check())
             $this->respond(401, "Action not permitted.");
-        }
+
+        // Get user id at token
+        $userId = Token::getPayload()['uid'];
+        $user = (new UserModel(ConnectionCreator::create()))->getById($userId);
+
+        if (!$user)
+            $this->respond(401, "Action not permitted.");
     }
 }
