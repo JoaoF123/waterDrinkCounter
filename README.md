@@ -48,6 +48,7 @@ Responses
 ## POST 	/login
 
 Params
+
 	No parameters
 
 Request body
@@ -89,6 +90,7 @@ Get infos from a specific user
 ## GET 	/users/{id}
 
 Params
+
 	Id : Integer | Required | User id
 
 
@@ -132,7 +134,8 @@ Responses
 ## GET 	/users/{?page=1&per_page=2}
 
 Params
-	page: Integer | Optional | Index of page do you want
+
+    page: Integer | Optional | Index of page do you want
     per_page: Integer | Optional | Quantity of registers per page do you want
 
 Headers
@@ -184,6 +187,7 @@ Responses
 ## PUT	/users/{id}
 
 Params
+
 	Id : Integer | Required | User id
 
 Request body
@@ -244,6 +248,7 @@ Responses
 ## DELETE	/users/{id}
 
 Params
+
 	Id : Integer | Required | User id
 
 
@@ -285,6 +290,7 @@ Responses
 ## POST	/users/{id}/drink
 
 Params
+
 	Id : Integer | Required | User id
 
 Request body
@@ -330,6 +336,7 @@ Responses
 ## GET 	/ranking
 
 Params
+
 	No Params
 
 Responses
@@ -363,6 +370,7 @@ Responses
 ## GET 	/users/{id}/history
 
 Params
+
 	Id : Integer | Required | User id
 
 
