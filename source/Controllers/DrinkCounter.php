@@ -36,31 +36,24 @@ class DrinkCounter extends BaseController {
         // Check if user exists
         if ($user) {
 
-            // Update entity data
-            $user->setDrinkCounter($user->getDrinkCounter() + $params['drink_ml']);
-
             // Start transaction
             $this->connection->beginTransaction();
 
-            // Check if user was update
-            if ($userModel->update($user)) {
+            // Load user drink model
+            $userDrinkSaved = (new UserDrinkModel($this->connection))
+                ->save(
+                    $user->getId(),
+                    $params['drink_ml']
+                );
 
-                // Load user drink model
-                $userDrinkSaved = (new UserDrinkModel($this->connection))
-                    ->save(
-                        $user->getId(),
-                        $params['drink_ml']
-                    );
+            // Verify user drink was save
+            if ($userDrinkSaved) {
+                
+                // Commit transaction
+                $this->connection->commit();
 
-                // Verify user drink was save
-                if ($userDrinkSaved) {
-                    
-                    // Commit transaction
-                    $this->connection->commit();
-
-                    // Respond request with Ok status
-                    $this->respond(200, "User drink saved successfully");
-                }
+                // Respond request with Ok status
+                $this->respond(200, "User drink saved successfully");
             }
 
             // Rollback transaction

@@ -72,7 +72,7 @@ class User extends BaseController
         $this->authenticatedUser();
 
         // Get params sent by url
-        $userId = $data['id'];
+        $userId = (int)$data['id'];
 
         // Load user model
         $userModel = new UserModel($this->connection);
@@ -93,7 +93,7 @@ class User extends BaseController
         $params = $this->getParams(["name", "email", "password"]);
 
         // Get user id sent by url
-        $userId = $data['id'];
+        $userId = (int)$data['id'];
 
         // Load user model
         $userModel = new UserModel($this->connection);
@@ -134,7 +134,7 @@ class User extends BaseController
         $this->authenticatedUser();
 
         // Get user id sent by url
-        $userId = $data['id'];
+        $userId = (int)$data['id'];
 
         // Load user model
         $userModel = new UserModel($this->connection);

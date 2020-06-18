@@ -16,11 +16,10 @@ class UserModel extends PDO {
 
     public function update(UserEntity $userEntity)
     {
-        $statement = $this->connection->prepare("UPDATE users SET name = :name, email = :email, password = :password, drink_counter = :drinkCounter WHERE id = :id");
+        $statement = $this->connection->prepare("UPDATE users SET name = :name, email = :email, password = :password WHERE id = :id");
         $statement->bindValue(":name", $userEntity->getName());
         $statement->bindValue(":email", $userEntity->getEmail());
         $statement->bindValue(":password", $userEntity->getPassword());
-        $statement->bindValue(":drinkCounter", $userEntity->getDrinkCounter());
         $statement->bindValue(":id", $userEntity->getId());
 
         return $statement->execute();
@@ -44,7 +43,14 @@ class UserModel extends PDO {
 
     public function getById(Int $id)
     {
-        $statement = $this->connection->prepare("SELECT * FROM users WHERE id = :id");
+        $query = "SELECT users.id, users.email, users.name, users.password, ";
+        $query .= "IF(SUM(user_drink.drink_ml) IS NULL, 0, SUM(user_drink.drink_ml)) AS drink_counter";
+        $query .= " FROM users";
+        $query .= " LEFT JOIN user_drink ON users.id = user_drink.id_user";
+        $query .= " WHERE users.id = :id";
+        $query .= " GROUP BY users.id";
+
+        $statement = $this->connection->prepare($query);
         $statement->bindValue(':id', $id);
         $statement->execute();
 
@@ -65,7 +71,11 @@ class UserModel extends PDO {
 
     public function getAll($page, $offset)
     {
-        $query = "SELECT * FROM users";
+        $query = "SELECT users.id, users.email, users.name, users.password, ";
+        $query .= "IF(SUM(user_drink.drink_ml) IS NULL, 0, SUM(user_drink.drink_ml)) AS drink_counter";
+        $query .= " FROM	users";
+        $query .= " LEFT JOIN user_drink ON users.id = user_drink.id_user";
+        $query .= " GROUP BY users.id";
 
         // Check if page is set
         if ($page) {
