@@ -44,4 +44,16 @@ class UserDrinkModel {
 
         return ($statement->execute()) ? $statement->fetchAll(PDO::FETCH_ASSOC) : [];
     }
+
+    public function getUserHistory(int $userId)
+    {
+        $query = "SELECT DATE_FORMAT(created_at, '%d/%m/%Y') AS data, drink_ml";
+        $query .= " FROM user_drink";
+        $query .= " WHERE id_user = :id";
+
+        $statement = $this->connection->prepare($query);
+        $statement->bindValue(":id", $userId);
+
+        return ($statement->execute()) ? $statement->fetchAll(PDO::FETCH_ASSOC) : [];
+    }
 }

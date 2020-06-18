@@ -190,6 +190,18 @@ class User extends BaseController
         }
     }
 
+    public function history($data)
+    {
+        // Get user id sent by url
+        $userId = (int)$data['id'];
+
+        // Get history of user
+        $userHistory = (new UserDrinkModel($this->connection))->getUserHistory($userId);
+
+        // Respond request
+        ($userHistory) ? $this->respond(200, $userHistory) : $this->respond(204);
+    }
+
     private function validateData(UserEntity $userEntity)
     {
         // Validate required data
