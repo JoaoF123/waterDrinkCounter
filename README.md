@@ -17,6 +17,7 @@ Ex.: GET https://waterdrinkcounter.herokuapp.com/users/ (To create a new user)
 ## POST 	/users/
 
 Params
+
 	No parameters
 
 Request body
