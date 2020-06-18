@@ -2,6 +2,8 @@
 
 namespace Source\Controllers;
 
+use Source\Services\Token;
+
 class BaseController {
 
     protected function getParams(array $requiredFields)
@@ -11,6 +13,11 @@ class BaseController {
 
         // Handle params
         $params = (isset($params[0])) ? $params[0] : $params;
+
+        if (empty($params)) {
+            // Return Bad Request status code
+            $this->respond(400, "Invalid parameters");
+        }
 
         // Checking required fields are in params
         foreach ($requiredFields as $field) {
@@ -26,7 +33,7 @@ class BaseController {
         return $params;
     }
 
-    protected function respond(int $statusCode, $message)
+    protected function respond(int $statusCode, $message = "")
     {
         // Return status code
         http_response_code($statusCode);
@@ -36,5 +43,12 @@ class BaseController {
 
         // Stop execution
         exit();
+    }
+
+    protected function authenticatedUser() : void
+    {
+        if (!Token::check()) {
+            $this->respond(401, "Action not permitted.");
+        }
     }
 }

@@ -4,8 +4,17 @@ namespace Source\Controllers;
 
 use Source\Services\Token;
 use Source\Models\UserModel;
+use Source\Services\ConnectionCreator;
 
 class Login extends BaseController {
+
+    private $connection;
+
+    public function __construct()
+    {
+        // Create DB Connection
+        $this->connection = ConnectionCreator::create();
+    }
 
     public function execute()
     {
@@ -13,7 +22,7 @@ class Login extends BaseController {
         $params = $this->getParams(["email", "password"]);
 
         // Load User Model
-        $userModel = new UserModel();
+        $userModel = new UserModel($this->connection);
 
         // Get use by email and password
         $user = $userModel->getByEmailPassword($params['email'], $params['password']);

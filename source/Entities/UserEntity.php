@@ -2,6 +2,8 @@
 
 namespace Source\Entities;
 
+use Source\Services\Validation;
+
 class UserEntity {
 
     private $id;
@@ -55,23 +57,54 @@ class UserEntity {
         return $this->drinkCounter;
     }
 
-    public function setName($name)
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
+
+    public function setName(string $name)
     {
         $this->name = $name;
     }
 
-    public function setEmail($email)
+    public function setEmail(string $email)
     {
         $this->email = $email;
     }
 
-    public function setPassword($password)
+    public function setPassword(string $password)
     {
-        $this->password = $password;
+        $this->password = sha1($password);
     }
 
-    public function setDrinkCounter($drinCounter)
+    public function setDrinkCounter(int $drinkCounter)
     {
         $this->drinkCounter = $drinkCounter;
+    }
+
+    public function validate()
+    {
+        // Define return array
+        $errors = [];
+
+        // Validate e-mail field
+        if (!Validation::requiredString($this->email)) {
+            array_push($errors, "E-mail is required.");
+        } else if (!Validation::validEmail($this->email)) {
+            array_push($errors, "E-mail is not valid.");
+        }
+
+        // Validate name field
+        if (!Validation::requiredString($this->name)) {
+            array_push($errors, "Name is required.");
+        }
+
+        // Validate password field
+        if (!Validation::requiredString($this->password)) {
+            array_push($errors, "Password is required.");
+        }
+
+        // Return errors found
+        return $errors;
     }
 }

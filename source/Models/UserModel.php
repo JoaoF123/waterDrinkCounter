@@ -7,16 +7,36 @@ use Source\Entities\UserEntity;
 
 class UserModel extends PDO {
 
-    private $pdo;
+    private $connection;
 
-    public function __construct()
+    public function __construct(PDO $pdo)
     {
-        parent::__construct(DB_DSN, DB_USERNAME, DB_PASSWORD, DB_OPTIONS);
+        $this->connection = $pdo;
+    }
+
+    public function update(UserEntity $userEntity)
+    {
+        $statement = $this->connection->prepare("UPDATE users SET name = :name, email = :email, password = :password, drink_counter = :drinkCounter WHERE id = :id");
+        $statement->bindValue(":name", $userEntity->getName());
+        $statement->bindValue(":email", $userEntity->getEmail());
+        $statement->bindValue(":password", $userEntity->getPassword());
+        $statement->bindValue(":drinkCounter", $userEntity->getDrinkCounter());
+        $statement->bindValue(":id", $userEntity->getId());
+
+        return $statement->execute();
+    }
+
+    public function delete(int $userId)
+    {
+        $statement = $this->connection->prepare("DELETE FROM users WHERE id = :id");
+        $statement->bindValue(":id", $userId);
+
+        return $statement->execute();
     }
 
     public function getById(Int $id)
     {
-        $statement = parent::prepare("SELECT * FROM users WHERE id = :id");
+        $statement = $this->connection->prepare("SELECT * FROM users WHERE id = :id");
         $statement->bindValue(':id', $id);
         $statement->execute();
 
@@ -37,7 +57,7 @@ class UserModel extends PDO {
 
     public function getAll()
     {
-        $statement = parent::prepare("SELECT * FROM users");
+        $statement = $this->connection->prepare("SELECT * FROM users");
         $statement->execute();
 
         $users = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -58,9 +78,9 @@ class UserModel extends PDO {
 
     public function getByEmailPassword(string $email, string $password)
     {
-        $statement = parent::prepare("SELECT * FROM users WHERE email = :email AND password = :password");
+        $statement = $this->connection->prepare("SELECT * FROM users WHERE email = :email AND password = :password");
         $statement->bindValue(":email", $email);
-        $statement->bindValue(":password", $password);
+        $statement->bindValue(":password", sha1($password));
         $statement->execute();
 
         $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -76,5 +96,42 @@ class UserModel extends PDO {
         }
 
         return "";
+    }
+
+    public function getByEmail(string $email)
+    {
+        $statement = $this->connection->prepare("SELECT * FROM users WHERE email = :email");
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            return new UserEntity(
+                $user['name'],
+                $user['email'],
+                $user['password'],
+                $user['drink_counter'],
+                $user['id']
+            );
+        }
+
+        return "";
+    }
+
+    public function insert(UserEntity $userEntity)
+    {
+        $statement = $this->connection->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
+        $statement->bindValue(":name", $userEntity->getName());
+        $statement->bindValue(":email", $userEntity->getEmail());
+        $statement->bindValue(":password", sha1($userEntity->getPassword()));
+        
+        $success = $statement->execute(); 
+        
+        if ($success) {
+            $userEntity->setId($this->connection->lastInsertId());
+        }
+
+        return $success;
     }
 }

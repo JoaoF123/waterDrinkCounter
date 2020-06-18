@@ -76,4 +76,19 @@ class Token {
 
         return false;
     }
+
+    public static function getPayload()
+    {
+        // Get requisition header
+        $httpHeader = apache_request_headers();
+
+        // Explode authorization string to get JWT token
+        $bearer = explode(" ", $httpHeader['Authorization']);
+
+        // Get data from payload
+        $payload = explode(".", $bearer['1'])[1];
+
+        // Return handled data
+        return json_decode(base64_decode($payload), true);
+    }
 }
