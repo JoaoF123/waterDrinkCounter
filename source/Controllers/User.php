@@ -32,7 +32,7 @@ class User extends BaseController
         // Insert user in DB and return request
         ((new UserModel($this->connection))->insert($userEntity)) 
             ? $this->respond(200, "User created successfully")
-            : $this->respond(500, "");
+            : $this->respond(500);
     }
 
     public function getAll()
@@ -106,7 +106,7 @@ class User extends BaseController
 
                 // Check if new email is unique
                 if (!$this->isUniqueEmail($params['email'], $user->getId())) {
-                    $this->respond(400, "E-mail already registered.");
+                    $this->respond(400, "Email already registered.");
                 }
 
                 // Update entity data
