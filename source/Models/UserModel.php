@@ -34,6 +34,14 @@ class UserModel extends PDO {
         return $statement->execute();
     }
 
+    public function getTotalCount()
+    {
+        $statement = $this->connection->prepare("SELECT * FROM users");
+        $statement->execute();
+
+        return $statement->rowCount();
+    }
+
     public function getById(Int $id)
     {
         $statement = $this->connection->prepare("SELECT * FROM users WHERE id = :id");
@@ -55,9 +63,21 @@ class UserModel extends PDO {
         return "";
     }
 
-    public function getAll()
+    public function getAll($page, $offset)
     {
-        $statement = $this->connection->prepare("SELECT * FROM users");
+        $query = "SELECT * FROM users";
+
+        // Check if page is set
+        if ($page) {
+
+            // Set limit and offset
+            $index = ($page - 1) * $offset;
+
+            // Add in query
+            $query .= " LIMIT $index, $offset";
+        }
+
+        $statement = $this->connection->prepare($query);
         $statement->execute();
 
         $users = $statement->fetchAll(PDO::FETCH_ASSOC);

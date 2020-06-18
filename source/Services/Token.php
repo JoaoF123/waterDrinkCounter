@@ -53,7 +53,7 @@ class Token {
 
             $header = $splitedToken[0];
             $payload = $splitedToken[1];
-            $sign = $splitedToken[2];
+            $sign = str_replace("\\/", "/", $splitedToken[2]);
 
             // Handle payload
             $payloadHandled = json_decode(base64_decode($payload), true);
@@ -67,7 +67,7 @@ class Token {
                 // Validate sign
                 $valid = hash_hmac('sha256', $header . "." . $payload, self::$key, true);
                 $valid = base64_encode($valid);
-                
+
                 if ($sign == $valid) {
                     return true;
                 }

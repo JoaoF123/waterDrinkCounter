@@ -40,11 +40,18 @@ class User extends BaseController
         // Verify user authenticated
         $this->authenticatedUser();
 
+        // Get params sent by json body
+        $params = $this->getParams([]);
+
+        // Get page and offset 
+        $page = (isset($params['page'])) ? $params['page'] : null;
+        $offset = (isset($params['offset'])) ? $params['offset'] : 10;
+
         // Load user model
         $dbUser = new UserModel($this->connection);
 
         // Get all users
-        $users = $dbUser->getAll();
+        $users = $dbUser->getAll($page, $offset);
         $userList = [];
 
         // Handle the data
@@ -52,8 +59,11 @@ class User extends BaseController
             $userList[] = $user->toArray();
         }
 
+        // Get users total count
+        $usersTotalCount = $dbUser->getTotalCount();
+
         // Retun request
-        ($userList) ? $this->respond(200, $userList) : $this->respond(204);
+        ($userList) ? $this->respond(200, [ "totalCount" => $usersTotalCount , "data" => $userList ]) : $this->respond(204);
     }
 
     public function getById($data)
@@ -71,7 +81,7 @@ class User extends BaseController
         $user = $userModel->getById($userId);
 
         // Returrn request
-        ($user) ? $this->respond(200, $user->toArray()) : $this->respond(204);
+        ($user) ? $this->respond(200, [ "data" => $user->toArray() ]) : $this->respond(204);
     }
 
     public function update($data)

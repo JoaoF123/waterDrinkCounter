@@ -4,6 +4,8 @@ require __DIR__ . "/vendor/autoload.php";
 
 use CoffeeCode\Router\Router;
 
+date_default_timezone_set('America/Sao_Paulo');
+
 $router = new Router(BASE_URL);
 
 $router->namespace("Source\Controllers");

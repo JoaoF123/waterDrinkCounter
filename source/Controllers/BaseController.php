@@ -14,11 +14,6 @@ class BaseController {
         // Handle params
         $params = (isset($params[0])) ? $params[0] : $params;
 
-        if (empty($params)) {
-            // Return Bad Request status code
-            $this->respond(400, "Invalid parameters");
-        }
-
         // Checking required fields are in params
         foreach ($requiredFields as $field) {
             
