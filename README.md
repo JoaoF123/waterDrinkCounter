@@ -1,4 +1,4 @@
-## WaterDrinkCounterAPI
+#### WaterDrinkCounterAPI
 
 WaterDrinkAPI is a study project to know more about RESTful APIs with PHP.
 
@@ -7,14 +7,14 @@ if you want test, i uploaded in Heroku and you can access using base url: https:
 Ex.: GET https://waterdrinkcounter.herokuapp.com/users/ (To create a new user)
 
 
--- Endpoints
+### Endpoints
 
 ------------------------------------------------------------------------------------------------------------
 
 ## Create user
     Create a new user
 
-## POST 	/users/
+# POST 	/users/
 
 Params
 
@@ -45,7 +45,7 @@ Responses
 ## Login
     Log in to the API
 
-## POST 	/login
+# POST 	/login
 
 Params
 
@@ -87,7 +87,7 @@ Responses
 ## Get a user
 Get infos from a specific user
 
-## GET 	/users/{id}
+# GET 	/users/{id}
 
 Params
 
@@ -131,7 +131,7 @@ Responses
 ## Get all users
     Get infos from all users registered
 
-## GET 	/users/{?page=1&per_page=2}
+# GET 	/users/{?page=1&per_page=2}
 
 Params
 
@@ -184,7 +184,7 @@ Responses
 ## Update
     Update my own user
 
-## PUT	/users/{id}
+# PUT	/users/{id}
 
 Params
 
@@ -245,7 +245,7 @@ Responses
 ## Delete
     Delete my own user
 
-## DELETE	/users/{id}
+# DELETE	/users/{id}
 
 Params
 
@@ -287,7 +287,7 @@ Responses
 ## Drink
     Increment the water drink counter
 
-## POST	/users/{id}/drink
+# POST	/users/{id}/drink
 
 Params
 
@@ -333,7 +333,7 @@ Responses
 ## Ranking
     Get a ranking of users who drank most water today
 
-## GET 	/ranking
+# GET 	/ranking
 
 Params
 
@@ -367,7 +367,7 @@ Responses
 ## User history
     Get history of a specific user
 
-## GET 	/users/{id}/history
+# GET 	/users/{id}/history
 
 Params
 
