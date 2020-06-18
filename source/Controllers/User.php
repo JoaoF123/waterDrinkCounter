@@ -103,7 +103,12 @@ class User extends BaseController
 
             // Check if updated user is own user
             if ($this->isOwnUser($user)) {
-                
+
+                // Check if new email is unique
+                if (!$this->isUniqueEmail($params['email'], $user->getId())) {
+                    $this->respond(400, "E-mail already registered.");
+                }
+
                 // Update entity data
                 $user->setName($params['name']);
                 $user->setEmail($params['email']);
@@ -144,7 +149,7 @@ class User extends BaseController
 
             // Check if updated user is own user
             if ($this->isOwnUser($user)) {
-                
+            
                 // Start a transaction
                 $this->connection->beginTransaction();
 
@@ -215,5 +220,13 @@ class User extends BaseController
 
         // Compare token id with url id
         return ($payload['uid'] == $userEntity->getId()) ? true : false;
+    }
+
+    private function isUniqueEmail(string $email, int $idUser)
+    {
+        // Search for a user with this email
+        $user = (new userModel($this->connection))->getByEmailWithoutUser($email, $idUser);
+
+        return (!empty($user)) ? false : true;
     }
 }

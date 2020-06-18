@@ -163,6 +163,17 @@ class UserModel extends PDO {
         return "";
     }
 
+    public function getByEmailWithoutUser(string $email, int $idUser)
+    {
+        $statement = $this->connection->prepare("SELECT * FROM users WHERE email = :email AND id <> :id");
+        $statement->bindValue(":email", $email);
+        $statement->bindValue(":id", $idUser);
+        $statement->execute();
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+
     public function insert(UserEntity $userEntity)
     {
         $statement = $this->connection->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
