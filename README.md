@@ -2,7 +2,7 @@
 
 WaterDrinkAPI is a study project to know more about RESTful APIs with PHP.
 
-if you want test, i uploaded in Heroku and you can access using base url: https://waterdrinkcounter.herokuapp.com + endpoint.
+If you want to test it, I’ve uploaded in heroku and you can access using the following base url: https://waterdrinkcounter.herokuapp.com + endpoint.
 
 Ex.: GET https://waterdrinkcounter.herokuapp.com/users/ (To create a new user)
 
