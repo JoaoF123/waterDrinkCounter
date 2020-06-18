@@ -28,7 +28,7 @@ class BaseController {
             if (!array_key_exists($field, $params)) {
 
                 // Return Bad Request status code
-                $this->respond(400, "Invalid parameters");
+                $this->respond(400, "The parameter $field is required.");
             }
         }
 
