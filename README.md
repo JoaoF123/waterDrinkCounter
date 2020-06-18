@@ -28,6 +28,7 @@ Request body
     }
 
 Responses
+
 	200 OK
 		JSON object with a response message
 		{
@@ -49,6 +50,7 @@ Params
 	No parameters
 
 Request body
+
 	A JSON object with the user email (required) and password (required)
 	{
 		"email": "user@email.com",
@@ -56,6 +58,7 @@ Request body
     }
 
 Responses
+
 	200 OK
 		JSON object with a JWT token and user infos
         {
@@ -95,11 +98,13 @@ Headers
         eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTI1MTQ4MjksInVpZCI6MX0=.BS39OvQnIK2EDwNXGJvX0QJW9854DPl1sv2abVAw2Ng=
 
 Responses
+
     401 Unauthorized (When invalid token)
             JSON object with a response message
         {
         "response": "Action not permitted."
     }
+
 	200 OK
 		JSON object with user infos
 	{
@@ -136,6 +141,7 @@ Headers
         eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTI1MTQ4MjksInVpZCI6MX0=.BS39OvQnIK2EDwNXGJvX0QJW9854DPl1sv2abVAw2Ng=
 
 Responses
+
     401 Unauthorized (When invalid token)
 		JSON object with a response message
 	    {
@@ -180,6 +186,7 @@ Params
 	Id : Integer | Required | User id
 
 Request body
+
 	A JSON object with the user email (optional), name (optional) and password (optional)
 	{
 		“name”: “User Name”,
@@ -194,6 +201,7 @@ Headers
     eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTI1MTQ4MjksInVpZCI6MX0=.BS39OvQnIK2EDwNXGJvX0QJW9854DPl1sv2abVAw2Ng=
 
 Responses
+
 	401 Unauthorized (When invalid token)
 		JSON object with a response message
         {
@@ -245,6 +253,7 @@ Headers
         eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTI1MTQ4MjksInVpZCI6MX0=.BS39OvQnIK2EDwNXGJvX0QJW9854DPl1sv2abVAw2Ng=
 
 Responses
+
 	401 Unauthorized (When invalid token)
 		JSON object with a response message
         {
@@ -290,6 +299,7 @@ Headers
         eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTI1MTQ4MjksInVpZCI6MX0=.BS39OvQnIK2EDwNXGJvX0QJW9854DPl1sv2abVAw2Ng=
 
 Responses
+
 	401 Unauthorized (When invalid token)
 		JSON object with a response message
         {
@@ -308,8 +318,8 @@ Responses
             }
         }
 
-500 Internal Server Error
-	No response message
+    500 Internal Server Error
+	    No response message
 
 ------------------------------------------------------------------------------------------------------------
 
@@ -322,6 +332,7 @@ Params
 	No Params
 
 Responses
+
 	200 OK
 		Array of JSON objects with user infos
         {
@@ -355,6 +366,7 @@ Params
 
 
 Responses
+
 	200 OK
 		JSON object array with date and mls user drinked
         {
