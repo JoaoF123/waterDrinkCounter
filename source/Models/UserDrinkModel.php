@@ -30,4 +30,18 @@ class UserDrinkModel {
 
         return $statement->execute();
     }
+
+    public function getRanking()
+    {
+        $query = "SELECT users.name, SUM(user_drink.drink_ml) AS drink_ml ";
+        $query .= "FROM user_drink ";
+        $query .= "INNER JOIN users ON user_drink.id_user = users.id ";
+        $query .= "WHERE user_drink.created_at > '". date("Y-m-d 00:00:00") ."' AND user_drink.created_at < '" . date("Y-m-d 23:59:59") ."' ";
+        $query .= "GROUP BY users.id ";
+        $query .= "ORDER BY drink_ml DESC";
+
+        $statement = $this->connection->prepare($query);
+
+        return ($statement->execute()) ? $statement->fetchAll(PDO::FETCH_ASSOC) : [];
+    }
 }

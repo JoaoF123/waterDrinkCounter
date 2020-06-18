@@ -16,6 +16,7 @@ $router->get("/users/{id}", "User:getById");
 $router->put("/users/{id}", "User:update");
 $router->delete("/users/{id}", "User:delete");
 
+$router->get("/ranking", "DrinkCounter:ranking");
 $router->post("/users/{id}/drink", "DrinkCounter:add");
 
 $router->post("/login", "Login:execute");

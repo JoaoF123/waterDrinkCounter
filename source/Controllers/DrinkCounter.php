@@ -73,4 +73,13 @@ class DrinkCounter extends BaseController {
         // Return Not Acceptable code
         $this->respond(406, "User not found");
     }
+
+    public function ranking()
+    {
+        // Get ranking data
+        $ranking = (new UserDrinkModel($this->connection))->getRanking();
+
+        // Respond request with Ok status
+        $this->respond(200, [ "ranking" => $ranking ]);
+    }
 }
