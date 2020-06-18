@@ -108,7 +108,14 @@ class UserModel extends PDO {
 
     public function getByEmailPassword(string $email, string $password)
     {
-        $statement = $this->connection->prepare("SELECT * FROM users WHERE email = :email AND password = :password");
+        $query = "SELECT users.id, users.email, users.name, users.password, ";
+        $query .= "IF(SUM(user_drink.drink_ml) IS NULL, 0, SUM(user_drink.drink_ml)) AS drink_counter";
+        $query .= " FROM users";
+        $query .= " LEFT JOIN user_drink ON users.id = user_drink.id_user";
+        $query .= " WHERE users.email = :email AND users.password = :password";
+        $query .= " GROUP BY users.id";
+
+        $statement = $this->connection->prepare($query);
         $statement->bindValue(":email", $email);
         $statement->bindValue(":password", sha1($password));
         $statement->execute();
@@ -130,7 +137,14 @@ class UserModel extends PDO {
 
     public function getByEmail(string $email)
     {
-        $statement = $this->connection->prepare("SELECT * FROM users WHERE email = :email");
+        $query = "SELECT users.id, users.email, users.name, users.password, ";
+        $query .= "IF(SUM(user_drink.drink_ml) IS NULL, 0, SUM(user_drink.drink_ml)) AS drink_counter";
+        $query .= " FROM users";
+        $query .= " LEFT JOIN user_drink ON users.id = user_drink.id_user";
+        $query .= " WHERE users.email = :email";
+        $query .= " GROUP BY users.id";
+
+        $statement = $this->connection->prepare($query);
         $statement->bindValue(":email", $email);
         $statement->execute();
 

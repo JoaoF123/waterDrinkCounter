@@ -37,7 +37,7 @@ class Login extends BaseController {
             $token = $tokenService->generate($user->getId());
 
             // Return sucess status with token
-            $this->respond(200, [ "token" => $token ]);
+            $this->respond(200, [ "token" => $token, "data" => $user->toArray() ]);
 
         } else {
 

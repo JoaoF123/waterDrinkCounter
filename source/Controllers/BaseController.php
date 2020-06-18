@@ -6,13 +6,20 @@ use Source\Services\Token;
 
 class BaseController {
 
-    protected function getParams(array $requiredFields)
+    protected function getParams(array $requiredFields, bool $acceptNull = false)
     {
         // Get params sended by json body
         $params = json_decode(file_get_contents("php://input"), true);
 
         // Handle params
         $params = (isset($params[0])) ? $params[0] : $params;
+
+        // Check if params is empty
+        if (empty($params) && !$acceptNull) {
+
+            // Return Bad Request status code
+            $this->respond(400, "Invalid parameters");
+        }
 
         // Checking required fields are in params
         foreach ($requiredFields as $field) {

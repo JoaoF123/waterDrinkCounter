@@ -40,12 +40,9 @@ class User extends BaseController
         // Verify user authenticated
         $this->authenticatedUser();
 
-        // Get params sent by json body
-        $params = $this->getParams([]);
-
         // Get page and offset 
-        $page = (isset($params['page'])) ? $params['page'] : null;
-        $offset = (isset($params['offset'])) ? $params['offset'] : 10;
+        $page = (isset($_GET['page'])) ? $_GET['page'] : null;
+        $offset = (isset($_GET['per_page'])) ? $_GET['per_page'] : 10;
 
         // Load user model
         $dbUser = new UserModel($this->connection);

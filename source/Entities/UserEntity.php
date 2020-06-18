@@ -24,10 +24,9 @@ class UserEntity {
     public function toArray()
     {
         return [
-            "id"            => $this->id,
-            "name"          => $this->name,
+            "iduser"        => $this->id,
             "email"         => $this->email,
-            "password"      => $this->password,
+            "name"          => $this->name,
             "drink_counter" => $this->drinkCounter
         ];
     }
