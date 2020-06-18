@@ -2,8 +2,9 @@
 
 namespace Source\Controllers;
 
-use Source\Models\UserDrinkModel;
 use Source\Models\UserModel;
+use Source\Services\Validation;
+use Source\Models\UserDrinkModel;
 use Source\Services\ConnectionCreator;
 
 class DrinkCounter extends BaseController {
@@ -27,6 +28,9 @@ class DrinkCounter extends BaseController {
         // Get params sent by json body
         $params = $this->getParams(["drink_ml"]);
 
+        // Validate params data
+        $this->validateData($params);
+
         // Load user model
         $userModel = new UserModel($this->connection);
 
@@ -49,11 +53,14 @@ class DrinkCounter extends BaseController {
             // Verify user drink was save
             if ($userDrinkSaved) {
                 
+                // Update user entity to return
+                $user->setDrinkCounter($user->getDrinkCounter() + $params['drink_ml']);
+
                 // Commit transaction
                 $this->connection->commit();
 
                 // Respond request with Ok status
-                $this->respond(200, "User drink saved successfully");
+                $this->respond(200, [ "data" => $user->toArray() ]);
             }
 
             // Rollback transaction
@@ -65,6 +72,13 @@ class DrinkCounter extends BaseController {
 
         // Return Not Acceptable code
         $this->respond(406, "User not found");
+    }
+
+    private function validateData($params)
+    {
+        if (!Validation::requiredInt($params['drink_ml'])) {
+            $this->respond(400, "Param 'drink_ml' must be a integer value.");
+        }
     }
 
     public function ranking()
